@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+>
+    <!-- 启用注解扫描机制 -->
+    <context:annotation-config/>
+	<!-- 配置mybatis -->
+		<!-- 配置mybatis使用的数据连接池 -->
+		<bean id="dataSource"
+			  class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="username" value="web_user"></property>
+			<property name="password" value="123456"></property>
+			<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+			<property name="url" value="jdbc:mysql://39.105.111.19:3306/cloudteam"></property>
+		</bean>
+
+		<bean id="localDataSource"
+			  class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="username" value="root"></property>
+			<property name="password" value="root"></property>
+			<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+			<property name="url" value="jdbc:mysql://localhost:3306/cloudteam"></property>
+		</bean>
+
+	<!-- 配置事务 -->
+		<!-- 配置数据源事务管理器 -->
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+		<!-- 使用注解定义事务 使用 transactionManager管理 -->
+		<tx:annotation-driven transaction-manager="transactionManager" />
+
+		<!-- 配置mybatis使用的配置文件 -->
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="configLocation" value="/WEB-INF/config/mybatis-config.xml"/>
+		</bean>
+		<!-- spring ioc 扫描项目中的mapper装载到容器内，方便使用Autowire注入(mybatis使用spring ioc的方式) -->
+		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+			<!-- 要扫描的包的名称 -->
+			<property name="basePackage" value="com.zq.mvc.main.mappers"/>
+			<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+			<!-- 使用指定注解，或标注才扫描才成mapper - 设置为 @Repository标识 -->
+			<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		</bean>
+
+
+
+
+
+
+	<!-- 配置spring mvc 扫描组件 -->
+		<!-- 扫描services -->
+		<context:component-scan base-package="com.zq.mvc.main.services._implements"/>
+		<context:component-scan base-package="com.zq.mvc.main.dto"/>
+
+
+</beans>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.mvc.main.mappers.work.WorkManagerMapper" ><!-- 对应映射类 的全限定名 -->
+
+    <resultMap id="work_and_status" type="work">
+        <id column="work_id" property="work_id"/>
+        <result column="name" property="name"/>
+        <result column="team_id" property="team_id"/>
+        <result column="publish_user_id" property="publish_user_id"/>
+        <result column="exec_user_id" property="exec_user_id"/>
+        <result column="start_time" property="start_time"/>
+        <result column="end_time" property="end_time"/>
+        <result column="work_status_id" property="work_status_id"/>
+        <association property="workStatus" column="work_status_id"
+                     select="com.zq.mvc.main.mappers.workStatus.WorkStatusManagerMapper.getWorkStatusByWorkStatusId"/>
+        <association property="publishUser" column="publish_user_id"
+                     select="com.zq.mvc.main.mappers.user.UserManagerMapper.getUserByUser_id"/>
+        <association property="execUser" column="exec_user_id"
+                     select="com.zq.mvc.main.mappers.user.UserManagerMapper.getUserByUser_id"/>
+        <collection property="workMsgList" column="work_id"
+                    select="com.zq.mvc.main.mappers.workMsg.WorkMsgManagerMapper.getWorkMsgByWork_id"/>
+    </resultMap>
+
+
+    <select id="getCreateWorksByTeam_idAndUser_id"
+            resultMap="work_and_status">
+        select * from work where publish_user_id=#{user_id}
+        and team_id=#{team_id}
+    </select>
+
+    <select id="getExecWorksByTeam_idAndUser_id"
+            resultMap="work_and_status">
+        select * from work where exec_user_id=#{user_id}
+        and team_id=#{team_id}
+    </select>
+
+    <select id="getWorksByTeam_idAndUser_id" resultMap="work_and_status">
+        select * from work where
+        team_id=#{team_id}
+        and (exec_user_id=#{user_id} OR publish_user_id=#{user_id})
+    </select>
+
+    <delete id="deleteWorkByWorkId">
+        delete from work where work_id=#{work_id}
+    </delete>
+
+    <insert id="appendWork"
+            useGeneratedKeys="true" keyProperty="work_id" keyColumn="work_id">
+        insert into work
+        (name, team_id, publish_user_id,exec_user_id, start_time,end_time,work_status_id)
+        values
+        (
+            #{name},#{team_id},
+            #{publish_user_id},#{exec_user_id},
+            #{start_time},#{end_time},#{work_status_id}
+        )
+    </insert>
+
+    <update id="updateWorkStatus">
+        update work
+        set
+        work.work_status_id=#{work_status_id}
+        where work.work_id=#{work_id}
+    </update>
+
+    <update id="updateExecUser">
+        update work
+        set
+        work.exec_user_id=#{exec_user_id}
+        where work.work_id=#{work_id}
+    </update>
+
+    <update id="updateName">
+        update work
+        set
+        work.name=#{name}
+        where work.work_id=#{work_id}
+    </update>
+
+    <update id="updatePublish_user_id">
+        update work
+        set
+        work.publish_user_id=#{publish_user_id}
+        where work.work_id=#{work_id}
+    </update>
+
+</mapper>

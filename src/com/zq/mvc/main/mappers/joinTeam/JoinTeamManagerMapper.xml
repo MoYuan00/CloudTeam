@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.mvc.main.mappers.joinTeam.JoinTeamManagerMapper" ><!-- 对应映射类 的全限定名 -->
+
+    <delete id="removeJoinTeam">
+        delete from join_team where team_id=#{team_id} and user_id=#{user_id}
+    </delete>
+
+    <insert id="joinTeam">
+        insert into join_team
+        (team_id, user_id, join_time)
+        values
+        (#{team_id}, #{user_id}, #{join_time})
+    </insert>
+
+</mapper>

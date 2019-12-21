@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"
+		>
+<!--	支持全局跨域访问-->
+	<mvc:cors>
+		<mvc:mapping path="/**"/>
+	</mvc:cors>
+
+	<!-- 使用注解驱动 使用注解 -->
+	<mvc:annotation-driven/>
+	<!-- 定义扫描control的包 -->
+	<context:component-scan base-package="com.zq.mvc.main.controls"/>
+	<!-- 当spring mvc中没有对应的requestMapping拦截时交给 服务器默认的servlet去处理，
+   实现静态资源的访问,添加配置后重新部署就好 -->
+	<mvc:default-servlet-handler/>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<!-- 配置FastJson支持, FastJson可以解析更加复杂的类型（对象间的嵌套等，而jackJson无法直接解析，会报错） -->
+			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json</value>
+						<!--                        <value>text/html;charset=UTF-8</value>-->
+					</list>
+				</property>
+				<property name="features">
+					<list>
+						<value>QuoteFieldNames</value>
+<!--						&lt;!&ndash; 数值字段如果为null,输出为0,而非null &ndash;&gt;-->
+<!--						<value>WriteNullNumberAsZero</value>-->
+						<!-- List字段如果为null,输出为[],而非null -->
+						<value>WriteNullListAsEmpty</value>
+						<!-- Boolean字段如果为null,输出为false,而非null -->
+						<value>WriteNullBooleanAsFalse</value>
+						<!-- 字符类型字段如果为null,输出为"",而非null -->
+<!--						<value>WriteNullStringAsEmpty</value>-->
+<!--						关闭检查循环引用，解决返回值出现$ref: "$.data.execWorks[0].execUser"的情况-->
+						<value>DisableCircularReferenceDetect</value>
+<!--						<value>WriteEnumUsingToString</value>-->
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+    <!-- 使用JSR 303 检验传入controller的数据格式 -->
+
+
+</beans>

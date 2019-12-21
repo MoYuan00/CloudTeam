@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration><!-- 配置 -->
+    <!-- 给自己定义的bean添加别名，使用包扫描的方式 -->
+    <typeAliases>
+        <package name="com.zq.mvc.main.pojo"/>
+    </typeAliases>
+
+    <!-- 将所有的mapper和mapper.xml装载并映射 -->
+    <!--
+    一. 包扫描 <package name="com.zq.mvc.main.mappers"/>
+        1. xml要和其关联的mapper.java在同一目录下
+        2. xml要和mapper.java同名
+    二. xml resource扫描 <mapper resource="com/zq/mvc/main/mappers/xml/User/LoginMapper.xml"/>
+        1. 只需要添加xml的路径就可以，通过此xml会自动扫描出.java
+    -->
+    <mappers>
+        <package name="com.zq.mvc.main.mappers"/>
+    </mappers>
+</configuration>

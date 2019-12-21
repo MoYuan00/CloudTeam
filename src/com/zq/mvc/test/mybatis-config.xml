@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 使用配置文件中的jdbc配置 -->
+    <properties resource="com/zq/mvc/test/jdbc.properties"/>
+    <!-- 数据库环境  数据库连接名，密码 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/><!-- 配置事务管理器 两种（JDBC和MANAGED） -->
+            <!-- 表示数据库内部使用的连接池 -->
+            <dataSource type="POOLED"><!-- 数据源3种内置（UPOOLED，POOLED，JNDI） -->
+                <!-- 使用${}引用properties中的配置 -->
+                <property name="driver" value="${database.driver}"/>
+                <property name="url" value="${database.url}"/>
+                <property name="username" value="${database.username}"/>
+                <property name="password" value="${database.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 将所有的mapper和mapper.xml装载进来 -->
+    <!--
+     一. 包扫描 <package name="com.zq.mvc.main.mappers"/>
+         1. xml要和其关联的mapper.java在同一目录下
+         2. xml要和mapper.java同名
+     二. xml resource扫描 <mapper resource="com/zq/mvc/main/mappers/xml/User/LoginMapper.xml"/>
+         1. 只需要添加xml的路径就可以，通过此xml会自动扫描出.java
+     -->
+    <mappers>
+        <package name="com.zq.mvc.main.mappers"/>
+    </mappers>
+
+
+</configuration>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.mvc.main.mappers.team.TeamManagerMapper" ><!-- 对应映射类 的全限定名 -->
+    <select id="getAllTeam" resultType="team">
+        select * from team
+    </select>
+    <!-- 一个对象作为参数 -->
+    <update id="updateTeam">
+        update team set
+        captain_user_id=#{captain_user_id},
+        team_name=#{team_name},
+        team_build_time=#{team_build_time},
+        team_detail=#{team_detail}
+        where team_id=#{team_id}
+    </update>
+    <!-- 插入并将主键回填 -->
+    <insert id="appendTeam"
+            useGeneratedKeys="true" keyProperty="team.team_id" keyColumn="team_id">
+        insert into team
+        (captain_user_id,team_name,team_build_time,team_detail)
+        values
+        (#{user_id},#{team.team_name},
+        #{team.team_build_time, javaType=date,jdbcType=TIMESTAMP},
+        #{team.team_detail})
+    </insert>
+    <delete id="deleteTeamByTeam_id">
+        delete from team where team_id=#{team_id}
+    </delete>
+
+    <resultMap id="team_captainUser" type="team">
+        <id column="team_id" property="team_id"/>
+        <result column="captain_user_id" property="captain_user_id"/>
+        <result column="team_name" property="team_name"/>
+        <result column="team_build_time" property="team_build_time"/>
+        <result column="team_detail" property="team_detail"/>
+        <association column="captain_user_id" property="captainUser"
+            select="com.zq.mvc.main.mappers.user.UserManagerMapper.getUserByUser_id"/>
+    </resultMap>
+
+    <select id="getCreateTeamByUser_id" resultMap="team_captainUser" parameterType="int">
+        select * from team
+        where captain_user_id=#{user_id}
+    </select>
+
+    <resultMap id="joinTeam_captainUser" type="joinTeam">
+        <id column="team_id" property="team_id"/>
+        <result column="captain_user_id" property="captain_user_id"/>
+        <result column="team_name" property="team_name"/>
+        <result column="team_build_time" property="team_build_time"/>
+        <result column="team_detail" property="team_detail"/>
+        <result column="join_time" property="join_time"/>
+        <result column="user_id" property="user_id"/>
+        <association column="captain_user_id" property="captainUser"
+                     select="com.zq.mvc.main.mappers.user.UserManagerMapper.getUserByUser_id"/>
+    </resultMap>
+
+    <select id="getJoinTeamByUser_id" resultMap="joinTeam_captainUser" parameterType="int">
+       	select team.*,join_time from  join_team
+        left join team on team.team_id = join_team.team_id
+        where join_team.user_id=#{user_id}
+    </select>
+
+    <resultMap id="teamInfo" type="team">
+        <id column="team_id" property="team_id"/>
+        <result column="captain_user_id" property="captain_user_id"/>
+        <result column="team_name" property="team_name"/>
+        <result column="team_build_time" property="team_build_time"/>
+        <result column="team_detail" property="team_detail"/>
+        <result column="team_detail" property="team_detail"/>
+        <association property="captainUser" column="captain_user_id"
+                     select="com.zq.mvc.main.mappers.user.UserManagerMapper.getUserByUser_id"/>
+        <collection property="joinUserList" column="team_id"
+                    select="com.zq.mvc.main.mappers.user.UserManagerMapper.getJoinUserByTeam_id"/>
+    </resultMap>
+    <select id="getTeamAllInfo" resultMap="teamInfo">
+        select * from team where team_id=#{team_id}
+    </select>
+
+    <update id="updateTeamSomeInfo" parameterType="team">
+        update team
+        set
+        team_name=#{team_name},
+        team_detail=#{team_detail}
+        where team.team_id=#{team_id}
+    </update>
+
+    <select id="getTeamSomeInfo" resultType="team">
+        select * from team where team_id=#{team_id}
+    </select>
+
+</mapper>

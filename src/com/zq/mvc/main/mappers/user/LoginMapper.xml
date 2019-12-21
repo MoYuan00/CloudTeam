@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.mvc.main.mappers.user.LoginMapper" ><!-- 对应映射类 的全限定名 -->
+    <select id="loginByNameAndPassword" resultType="user">
+        select * from user where name=#{userName} and password=#{password} LIMIT 1
+    </select>
+</mapper>

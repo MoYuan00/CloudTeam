@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.mvc.main.mappers.workStatus.WorkStatusManagerMapper" ><!-- 对应映射类 的全限定名 -->
+    <select id="getWorkStatuses"
+            resultType="workStatus"  >
+        select * from work_status
+    </select>
+
+    <select id="getWorkStatusByWorkStatusId" resultType="workStatus">
+        select * from work_status where work_status_id=#{work_status_id}
+    </select>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.mvc.main.mappers.user.UserManagerMapper" ><!-- 对应映射类 的全限定名 -->
+    <select id="getAllUser" resultType="user">
+        select * from user
+    </select>
+    <!-- 一个对象作为参数 -->
+    <update id="updateUserByUserId">
+        update user set
+        user.name=#{name},
+        user.detail=#{detail},
+        user.role=#{role},
+        user.password=#{password}
+        where user.user_id=#{user_id}
+    </update>
+    <!-- 插入并将主键回填 -->
+    <insert id="appendUser"
+            useGeneratedKeys="true" keyProperty="user_id" keyColumn="user_id">
+        insert into user
+        (name,detail,role,password)
+        values
+        (#{name},#{detail},#{role},#{password})
+    </insert>
+    <delete id="removeUserByUser_id">
+        delete from user where user_id=#{user_id}
+    </delete>
+
+
+
+    <select id="getUserByUser_id" resultType="user" parameterType="int">
+        select * from user where user_id=#{user_id}
+    </select>
+
+    <update id="updateUserInfoByUser_id" parameterType="user">
+        update user
+        set
+        user.name=#{name},
+        user.detail=#{detail}
+        where user.user_id=#{user_id}
+    </update>
+    <select id="getJoinUserByTeam_id" resultType="user">
+        select user.* from user
+        inner join join_team on join_team.user_id=user.user_id
+        where join_team.team_id=#{team_id}
+    </select>
+    <select id="getCreateUserByTeam_id" resultType="user">
+        select user.* from team
+        left join user on user.user_id = team.captain_user_id
+        where team.team_id=#{team_id}
+    </select>
+
+    <select id="getUserByName" resultType="user">
+        select * from user where user.name=#{name}
+    </select>
+
+
+
+</mapper>

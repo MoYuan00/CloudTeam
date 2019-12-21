@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zq.mvc.main.mappers.workMsg.WorkMsgManagerMapper" ><!-- 对应映射类 的全限定名 -->
+
+    <resultMap id="msg_user" type="workMsg">
+        <id column="work_msg_id" property="work_msg_id"/>
+        <result column="report_user_id" property="report_user_id"/>
+        <result column="work_id" property="work_id"/>
+        <result column="report_time" property="report_time"/>
+        <result column="content_text" property="content_text"/>
+        <association property="reportUser" column="report_user_id"
+                     select="com.zq.mvc.main.mappers.user.UserManagerMapper.getUserByUser_id"/>
+    </resultMap>
+
+    <select id="getWorkMsgByWork_id" resultMap="msg_user">
+        select * from work_msg where work_id=#{work_id}
+    </select>
+
+    <insert id="appendWorkMsg" parameterType="workMsg"
+    useGeneratedKeys="true" keyColumn="work_msg_id" keyProperty="work_msg_id">
+        insert into work_msg
+        (report_user_id, work_id, report_time, content_text)
+        values
+        (#{report_user_id}, #{work_id}, #{report_time}, #{content_text})
+    </insert>
+
+    <delete id="deleteAllWorkMsgByWork_id">
+        delete from work_msg where work_id=#{work_id}
+    </delete>
+
+    <delete id="deleteUserWorkMsg">
+        delete from work_msg where work_id=#{work_id} and report_user_id=#{user_id}
+    </delete>
+
+    <delete id="updateWorkMsgReport_user_id">
+        update work_msg
+        set
+        report_user_id=#{report_user_id}
+        where work_id=#{work_id}
+    </delete>
+</mapper>

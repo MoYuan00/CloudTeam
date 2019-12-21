@@ -1,0 +1,193 @@
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>主页</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+
+    <link href="css/other/bootstrap4.3.1.min.css" rel="stylesheet"/>
+    <!-- xs < 768px sm < 992px md < 1200px  lg < 1920px > xl -->
+    <link href="css/other/element-ui-index.css" rel="stylesheet"/>
+
+    <link href="css/own/nav-tpl.css" rel="stylesheet"/>
+
+    <script src="js/other/jquery-1.11.0.js"></script>
+    <script src="js/other/axios.min.js"></script>
+<!--    <script src="js/other/vue.js"></script>-->
+    <script src="js/other/vue.min.js"></script>
+    <script src="js/other/element-ui-index.js"></script>
+    <script src="js/other/vue-router.js"></script>
+    <script src="js/other/vuex.js"></script>
+
+    <!--    导入日志工具-->
+    <script src="js/own/logger.js"></script>
+    <!--    导入事件分发器-->
+    <script src="js/own/event.js"></script>
+    <!--    导入请求工具-->
+    <script src="js/own/request.js"></script>
+</head>
+
+<body>
+<div :element-loading-text="loadingText" id="app" v-loading.fullscreen.lock="loading > 0"
+>
+    <el-container>
+        <el-header id="header"  style="padding: 0px">
+            <router-view name="nav"></router-view>
+        </el-header>
+        <main-tpl  id="content">
+            <router-view name="context"></router-view>
+        </main-tpl>
+        <el-footer id="_footer">
+            <div>
+                <p>
+                    云团队协作
+                    <img  src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjMwcHgiIGhlaWdodD0iMzBweCIgdmlld0JveD0iMCAwIDM4IDQ4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0MCAoMzM3NjIpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPlNoYXBlIENvcHk8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZGVmcz48L2RlZnM+CiAgICA8ZyBpZD0idjIuMi4wIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0i6aaW6aG1Lem7mOiupOaViOaenC1jb3B5LTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03MC4wMDAwMDAsIC0xOS4wMDAwMDApIiBmaWxsPSIjNDA5RUZGIj4KICAgICAgICAgICAgPHBhdGggZD0iTTIxMi4xMzU0NDEsNDUuMTU3ODA3NyBaIE0xMDMuNDE2NTAyLDQ2LjIxNzU1MTEgQzEwMy40MDcwMDgsNDcuNzk0NTY4MiAxMDIuNTg3ODQxLDQ4LjE0NjM0NzQgMTAyLjU4Nzg0MSw0OC4xNDYzNDc0IEMxMDIuNTg3ODQxLDQ4LjE0NjM0NzQgODguNDUyMDQ3OCw1Ni4zMTQ1MDg3IDg3LjUzMjk5NTYsNTYuODI2Mjc1MSBDODYuNjIyMzM2LDU3LjIxNzE1NjEgODYuMDEzNjcwMyw1Ni44MjYyNzUxIDg2LjAxMzY3MDMsNTYuODI2Mjc1MSBDODYuMDEzNjcwMyw1Ni44MjYyNzUxIDcxLjIyMjU3MDYsNDguMjQ3OTU3MiA3MC42ODI2OTYyLDQ3Ljg3MDg0NDQgQzcwLjE0MjY4NDMsNDcuNDkzNzMxNiA3MC4xMzAxNjQzLDQ2LjkwNjM3NzQgNzAuMTMwMTY0Myw0Ni45MDYzNzc0IEM3MC4xMzAxNjQzLDQ2LjkwNjM3NzQgNzAuMTQ1MDIzMiwyOS45MTk5MTc0IDcwLjEzMDE2NDMsMjkuMTMzMzM2NCBDNzAuMTE1MzA1MywyOC4zNDY2MTc3IDcxLjA5Njk1NzYsMjcuNzU1NTQ2MSA3MS4wOTY5NTc2LDI3Ljc1NTU0NjEgTDg1Ljg3NTUzNzMsMTkuMjEzNDM4NyBDODYuNzg1MzcxNCwxOC43MzMyMDE2IDg3LjY3MTEyODYsMTkuMjEzNDM4NyA4Ny42NzExMjg2LDE5LjIxMzQzODcgQzg3LjY3MTEyODYsMTkuMjEzNDM4NyAxMDAuNzI2NjIzLDI2LjgwMjA5MzcgMTAyLjE3MzQ0MiwyNy42MTc3MjU3IEMxMDMuNTkxNTA3LDI4LjI5MTk1NzcgMTAzLjQxNjUwMiwyOS42ODQzNDI0IDEwMy40MTY1MDIsMjkuNjg0MzQyNCBDMTAzLjQxNjUwMiwyOS42ODQzNDI0IDEwMy40MjUzMDcsNDQuNzUxOTE5MiAxMDMuNDE2NTAyLDQ2LjIxNzU1MTEgTDEwMy40MTY1MDIsNDYuMjE3NTUxMSBaIE05Ny41MTYwMTA1LDI5LjE2OTEzMzkgQzk0LjQ5MDAxNzMsMjcuNDI3NDQ4MyA4Ny4zNjE1ODQyLDIzLjI5NzEwNjMgODcuMzYxNTg0MiwyMy4yOTcxMDYzIEM4Ny4zNjE1ODQyLDIzLjI5NzEwNjMgODYuNjY2MTAzOSwyMi45MjEyMzI2IDg1Ljk1MTc3NDcsMjMuMjk3MTA2MyBMNzQuMzQ4NzQwNiwyOS45ODIxNSBDNzQuMzQ4NzQwNiwyOS45ODIxNSA3My41NzgwMDI1LDMwLjQ0NDkwMTQgNzMuNTg5Njk3LDMxLjA2MDQ4MDUgQzczLjYwMTM5MTUsMzEuNjc2MDU5NyA3My41ODk2OTcsNDQuOTY5ODcwOCA3My41ODk2OTcsNDQuOTY5ODcwOCBDNzMuNTg5Njk3LDQ0Ljk2OTg3MDggNzMuNTk5NDY1NCw0NS40Mjk1OTMyIDc0LjAyMzQ5NTEsNDUuNzI0NjQ3MiBDNzQuNDQ3Mzg3Myw0Ni4wMTk3MDExIDg2LjA2MDE4OTgsNTIuNzMzMjQ1MSA4Ni4wNjAxODk4LDUyLjczMzI0NTEgQzg2LjA2MDE4OTgsNTIuNzMzMjQ1MSA4Ni41MzgxNTIsNTMuMDM5MTc1OSA4Ny4yNTMwMzE1LDUyLjczMzI0NTEgQzg3Ljk3NDY1MjYsNTIuMzMyNzI2MiA5OS4wNzMwMzM1LDQ1Ljk0MDI1ODIgOTkuMDczMDMzNSw0NS45NDAyNTgyIEM5OS4wNzMwMzM1LDQ1Ljk0MDI1ODIgOTkuNzE2MjMyNSw0NS42NjQ4OTI5IDk5LjcyMzY2MTksNDQuNDMwNzA1NiBDOTkuNzI1NzI1Nyw0NC4wNzQ3OTU5IDk5LjcyNjU1MTIsNDIuNjkzMjg4MSA5OS43MjY2ODg3LDQwLjk1NzUyMjkgTDg2LjY2MDA1MDIsNDguODc1MjM5NCBMODYuNjYwMDUwMiw0NS44NDYyMjEgQzg2LjY2MDA1MDIsNDQuNjAyMTIwNSA4Ny42MjMxMjg5LDQzLjc4MDk4MTEgODcuNjIzMTI4OSw0My43ODA5ODExIEw5OS4xODA3NjA3LDM2LjgxNjU3OTMgQzk5LjYxNjg5NzgsMzYuMzYxMTI1MSA5OS43MDY4NzY4LDM1LjYzMTU0NDcgOTkuNzI1NDUwNSwzNS4zNTU2Mjg3IEM5OS43MjUwMzc4LDM0LjA5MDQ2MjcgOTkuNzI0NDg3NCwzMi45ODUyODQxIDk5LjcyNDA3NDcsMzIuMjg1MTY3OCBMODYuNjYwMDUwMiw0MC4yMDEyMzIxIEw4Ni42NjAwNTAyLDM3LjAzNDUzMSBDODYuNjYwMDUwMiwzNS43OTA0MzA1IDg3LjQ4NTU0NjIsMzUuMjQ0NjU2NCA4Ny40ODU1NDYyLDM1LjI0NDY1NjQgTDk3LjUxNjAxMDUsMjkuMTY5MTMzOSBaIiBpZD0iU2hhcGUtQ29weSI+PC9wYXRoPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"/>
+    <!--                <img src="images/vue.png"/>-->
+                </p>
+                <p>
+                    团队成员：郑权，张傲然，范冰青，王飞，林丽华
+                </p>
+                <p>
+                    <div class="text-break text-left" style="display: inline-block">
+                        前端基于：vue + element-ui + jquery + bootstrap4
+                        <br>
+                        后端基于：spring + springMVC + mybatis
+                    </div>
+                </p>
+                <small style="color: gray">
+                    &copy;2019-2019 GeekJoker.com
+                    <div style="display: inline-block;" >
+                       | ICP证:<a style="color: gray" href="http://www.beian.miit.gov.cn">鄂ICP备19030176号-1</a>
+                    </div>
+                </small>
+            </div>
+        </el-footer>
+    </el-container>
+</div>
+</body>
+<!--导入通用组件-->
+<script src="js/own/components/main-tpl.js"></script>
+<script src="js/own/components/form-item-mini-tpl.js"></script>
+<script src="js/own/components/nav-menu-item-user-tpl.js"></script>
+<script src="js/own/components/nav-tpl.js"></script>
+
+<!--teamIndex 导入组件  -->
+<script src="js/own/pages/teamIndex/components/card-work-list-tpl.js"></script>
+<script src="js/own/pages/teamIndex/components/card-work-tpl.js"></script>
+<script src="js/own/pages/teamIndex/components/drawers-work-tpl.js"></script>
+<script src="js/own/pages/teamIndex/components/tag-tpl.js"></script>
+<script src="js/own/pages/teamIndex/components/work-msg-tpl.js"></script>
+<script src="js/own/pages/teamIndex/components/work-msg-list-tpl.js"></script>
+<script src="js/own/pages/teamIndex/components/new-work-dialog-tpl.js"></script>
+<script src="js/own/pages/teamIndex/components/team-user-table-tpl.js"></script>
+<!--teamIndex 导入路由-->
+<script src="js/own/pages/teamIndex/teamIndex.route.vue.js"></script>
+
+<!--userIndex 导入组件-->
+<script src="js/own/pages/userIndex/components/card-team-list-tpl.js"></script>
+<script src="js/own/pages/userIndex/components/card-team-tpl.js"></script>
+<script src="js/own/pages/userIndex/components/add-team-dialog-tpl.js"></script>
+<script src="js/own/pages/userIndex/components/more-team-dialog-tpl.js"></script>
+<script src="js/own/components/userInfoEdit-dialog-tpl.js"></script>
+<!--userIndex 导入路由-->
+<script src="js/own/pages/userIndex/userIndex.route.vue.js"></script>
+
+<!--index 导入组件-->
+<!--index 导入路由-->
+<script src="js/own/pages/index/index.route.vue.js"></script>
+
+<!--register 导入组件-->
+<!--register 导入路由-->
+<script src="js/own/pages/register/register.route.vue.js"></script>
+
+<!--login 导入组件-->
+<!--login 导入路由-->
+<script src="js/own/pages/login/login.route.vue.js"></script>
+
+<!--组装路由，导入入口文件-->
+<script src="js/own/router.vue.js"></script>
+<style>
+    #header{
+        border-bottom: 1px solid #dcdfe6;
+        /*固定到头部*/
+        position: fixed;
+        width: 100%;
+        background-color: #ffff;
+        z-index: 20;
+
+    }
+    /* 设置手机显示时左右 导航的 前后 按钮样式设置 */
+    .el-tabs__nav-prev, .el-tabs__nav-next {
+        display: inline-block;
+        height: 100%;
+        width: 20px;
+        box-shadow: 0px 0px 7px #dbdee5;
+    }
+    .el-tabs__nav-prev > *, .el-tabs__nav-next > * {
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        line-height: 40px;
+        padding-left: 3px;
+    }
+
+    /*设置页脚样式*/
+    #_footer{
+        width: 100%;
+        /* 这里设置这么大的padding */
+        padding: 40px 10px;
+        text-align: center;
+        background: #475050;
+        color: #fff;
+        position: static;
+        height: auto !important;
+    }
+
+    /*首页的走马灯背景颜色*/
+    .el-carousel__item h3 {
+        color: #475669;
+        font-size: 14px;
+        opacity: 0.75;
+        line-height: 200px;
+        margin: 0;
+    }
+    .el-carousel__item:nth-child(2n) {
+        background-color: #99a9bf;
+    }
+    .el-carousel__item:nth-child(2n+1) {
+        background-color: #d3dce6;
+    }
+
+
+    /* 设置主体内容最小高度，设置后可以保证页脚不会显示在浏览器中间 */
+    #content{
+        min-height: 400px;
+        margin-bottom: 50px;
+
+        /*设置距离头部的距离*/
+        margin-top: 60px;
+    }
+</style>
+<script>
+
+    // 通过setInterval定时调用，并且实时监听内容高度，来讲页脚固定到下方
+    // function updateFooterPos(){
+    //     const height = $('#content').height();
+    //     const wHeight = getWinSize().height;
+    //     const $footer = $('#footer');
+    //     if(wHeight - height > 360){// 如果主内容main可以撑满高度
+    //         $footer.css('position', 'fixed');
+    //         $footer.css('bottom', '0px');
+    //     }else{// 固定到下面
+    //         const $footer = $('#footer');
+    //         $footer.css('position', 'static');
+    //     }
+    // }
+   //  updateFooterPos();// 先执行一次
+   // // 当内容不足时，将页脚固定到下方，当内容充足时，不固定页脚
+   //  setInterval(function(){
+   //      updateFooterPos();
+   //  }, 1000);
+</script>
+</html>
